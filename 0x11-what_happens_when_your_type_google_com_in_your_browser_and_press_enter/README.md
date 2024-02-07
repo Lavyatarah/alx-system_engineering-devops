@@ -1,0 +1,20 @@
+DNS request: When you type "https://www.google.com" in your browser and press Enter, the first thing that happens is a DNS (Domain Name System) request. Your browser sends a request to a DNS resolver, which is a server that translates human-readable domain names into IP addresses that computers can understand. The DNS resolver then sends the IP address of "www.google.com" back to your browser.
+
+TCP/IP: Once the browser has the IP address for "www.google.com", it establishes a TCP (Transmission Control Protocol) connection with the web server. TCP is a connection-oriented protocol that ensures reliable data transmission between devices over a network. It uses a handshake process to establish a connection, and it also ensures that data packets are delivered in the correct order.
+
+Firewall: After establishing the TCP connection, your browser sends an HTTPS (Hypertext Transfer Protocol Secure) request to the web server. HTTPS is a secure version of HTTP that uses SSL/TLS (Secure Sockets Layer/Transport Layer Security) to encrypt data. Before the HTTPS request is sent, it passes through a firewall. A firewall is a security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules.
+
+HTTPS/SSL: The HTTPS request is encrypted using SSL/TLS before it reaches the web server. SSL/TLS is a cryptographic protocol that provides secure communication over a computer network. It is commonly used for secure web browsing and email communication.
+
+Load-balancer: The encrypted HTTPS request then reaches a load-balancer. A load-balancer is a device or software that distributes network traffic across multiple servers. This ensures that no single server is overwhelmed with too much traffic and that the entire system remains highly available and scalable.
+
+Web server: The load-balancer forwards the HTTPS request to a web server. The web server is responsible for processing the HTTPS request and returning the appropriate HTTP response. It serves static files like HTML, CSS, and JavaScript directly to the client.
+
+Application server: If the requested resource requires server-side processing, the web server forwards the request to an application server. The application server processes the request, interacting with databases and other backend services as needed. It may also generate dynamic HTML, CSS, or JavaScript content to be served to the client.
+
+Database: If the application server needs to access data stored in a database, it does so using a database management system (DBMS). The DBMS communicates with the database to retrieve or store data as requested by the application server.
+
+In conclusion, when you type "https://www.google.com" in your browser and press Enter, a complex series of events occurs involving DNS requests, TCP/IP connections, firewalls, HTTPS/SSL encryption, load-balancers, web servers, application servers, and databases. This process ensures that you can reliably access and interact with websites over the internet.
+
+You can find the blog post on Medium here: What Happens When You Type "https://www.google.com" in Your Browser and Press Enter
+by lavenia atarah
