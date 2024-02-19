@@ -1,30 +1,49 @@
-#!/usr/bin/python3
-""" Python to get data from an API and convert to Json"""
-import csv
-import json
-import requests
+#!/usr/bin/env python3
+
 import sys
+import requests
+import json
 
+def get_user(user_id):
+    url = "https://jsonplaceholder.typicode.com/users/{}".format(user_id)
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("Error: Unable to retrieve user {}".format(user_id))
+        return None
 
-if __name__ == '__main__':
-    USER_ID = sys.argv[1]
-    url_to_user = 'https://jsonplaceholder.typicode.com/users/' + USER_ID
-    res = requests.get(url_to_user)
-    """Documentation"""
-    USERNAME = res.json().get('username')
-    """Documentation"""
-    url_to_task = url_to_user + '/todos'
-    res = requests.get(url_to_task)
-    tasks = res.json()
+def get_tasks(user_id):
+    url = "https://jsonplaceholder.typicode.com/users/{}/todos".format(user_id)
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("Error: Unable to retrieve tasks for user {}".format(user_id))
+        return None
 
-    dict_data = {USER_ID: []}
+def export_to_json(user_id, tasks):
+    data = {
+        "user_id": user_id,
+        "tasks": []
+    }
     for task in tasks:
-        TASK_COMPLETED_STATUS = task.get('completed')
-        TASK_TITLE = task.get('title')
-        dict_data[USER_ID].append({
-                                  "task": TASK_TITLE,
-                                  "completed": TASK_COMPLETED_STATUS,
-                                  "username": USERNAME})
-    """print(dict_data)"""
-    with open('{}.json'.format(USER_ID), 'w') as f:
-        json.dump(dict_data, f)
+        task_data = {
+            "task": task.get("title", ""),
+            "completed": task.get("completed", False)
+        }
+        data["tasks"].append(task_data)
+    with open("{}.json".format(user_id), "w") as jsonfile:
+        json.dump(data, jsonfile)
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: {} <user_id>".format(sys.argv[0]))
+        sys.exit(1)
+
+    user_id = sys.argv[1]
+    user = get_user(user_id)
+    if user:
+        tasks = get_tasks(user_id)
+        if tasks:
+            export_to_json(user_id, tasks)
