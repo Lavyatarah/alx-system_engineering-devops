@@ -1,47 +1,24 @@
-#!/usr/bin/env python3
-
-import sys
-import requests
+#!/usr/bin/python3
+""" Export api to csv"""
 import csv
+import requests
+import sys
 
-def get_user(user_id):
-    url = "https://jsonplaceholder.typicode.com/users/{}".format(user_id)
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print("Error: Unable to retrieve user {}".format(user_id))
-        return None
+if __name__ == '__main__':
+    user = sys.argv[1]
+    url_user = 'https://jsonplaceholder.typicode.com/users/' + user
+    res = requests.get(url_user)
+    """ANYTHING"""
+    user_name = res.json().get('username')
+    task = url_user + '/todos'
+    res = requests.get(task)
+    tasks = res.json()
 
-def get_tasks(user_id):
-    url = "https://jsonplaceholder.typicode.com/users/{}/todos".format(user_id)
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print("Error: Unable to retrieve tasks for user {}".format(user_id))
-        return None
-
-def export_to_csv(user_id, tasks):
-    fieldnames = ["username", "task", "completed"]
-    with open("{}.csv".format(user_id), "w", newline="") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
+    with open('{}.csv'.format(user), 'w') as csvfile:
         for task in tasks:
-            writer.writerow({
-                "username": user_id,
-                "task": task.get("title", ""),
-                "completed": task.get("completed", False)
-            })
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: {} <user_id>".format(sys.argv[0]))
-        sys.exit(1)
-
-    user_id = sys.argv[1]
-    user = get_user(user_id)
-    if user:
-        tasks = get_tasks(user_id)
-        if tasks:
-            export_to_csv(user_id, tasks)
+            completed = task.get('completed')
+            """Complete"""
+            title_task = task.get('title')
+            """Done"""
+            csvfile.write('"{}","{}","{}","{}"\n'.format(
+                user, user_name, completed, title_task))
